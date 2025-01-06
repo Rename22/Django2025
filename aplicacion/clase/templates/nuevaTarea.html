@@ -1,0 +1,136 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Agregar Nueva Tarea</h3>
+        
+        <!-- Contenedor para mostrar alertas -->
+        <div id="alertas" class="mb-3"></div>
+        
+        <form id="formTarea" action="/guardarTarea/" method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Título -->
+            <div class="mb-3">
+                <label for="titulo" class="form-label"><b>Título:</b></label>
+                <input 
+                    type="text" 
+                    name="titulo" 
+                    id="titulo" 
+                    class="form-control" 
+                    required 
+                    minlength="4" 
+                    maxlength="200"
+                >
+                <div class="invalid-feedback">
+                    El título es obligatorio y debe tener entre 4 y 200 caracteres.
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-3">
+                <label for="descripcion" class="form-label"><b>Descripción:</b></label>
+                <textarea 
+                    name="descripcion" 
+                    id="descripcion" 
+                    class="form-control" 
+                    rows="5" 
+                    required
+                ></textarea>
+                <div class="invalid-feedback">
+                    La descripción es obligatoria.
+                </div>
+            </div>
+
+            <!-- Fecha Límite -->
+            <div class="mb-3">
+                <label for="fecha_limite" class="form-label"><b>Fecha Límite:</b></label>
+                <input 
+                    type="date" 
+                    name="fecha_limite" 
+                    id="fecha_limite" 
+                    class="form-control" 
+                    required
+                >
+                <div class="invalid-feedback">
+                    La fecha límite es obligatoria.
+                </div>
+            </div>
+
+            <!-- Clase Asociada -->
+            <div class="mb-3">
+                <label for="clase" class="form-label"><b>Clase Asociada:</b></label>
+                <select name="clase" id="clase" class="form-control" required>
+                    <option value="">Seleccione una clase</option>
+                    {% for clase in clases %}
+                        <option value="{{ clase.id }}">{{ clase.titulo }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Debe seleccionar una clase asociada.
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary me-2">Guardar</button>
+                <a href="/listadoTarea/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("formTarea");
+        const alertas = document.getElementById("alertas");
+
+        form.addEventListener("submit", (event) => {
+            alertas.innerHTML = ""; // Limpiar alertas previas
+            let esValido = true;
+
+            // Limpiar las clases previas de error
+            const fields = form.querySelectorAll(".form-control");
+            fields.forEach(field => {
+                field.classList.remove("is-invalid");
+            });
+
+            // Validar título
+            const titulo = form.titulo;
+            if (!titulo.value || titulo.value.length < 4 || titulo.value.length > 200) {
+                esValido = false;
+                titulo.classList.add("is-invalid");
+            }
+
+            // Validar descripción
+            const descripcion = form.descripcion;
+            if (!descripcion.value) {
+                esValido = false;
+                descripcion.classList.add("is-invalid");
+            }
+
+            // Validar fecha límite
+            const fecha_limite = form.fecha_limite;
+            if (!fecha_limite.value) {
+                esValido = false;
+                fecha_limite.classList.add("is-invalid");
+            }
+
+            // Validar clase
+            const clase = form.clase;
+            if (!clase.value) {
+                esValido = false;
+                clase.classList.add("is-invalid");
+            }
+
+            // Detener el envío si hay errores
+            if (!esValido) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

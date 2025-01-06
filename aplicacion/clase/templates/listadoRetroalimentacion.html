@@ -1,0 +1,35 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor para la tabla -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Lista de Retroalimentaciones</h3>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tarea</th>
+                    <th>Nombre Estudiante</th>
+                    <th>Comentario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for retroalimentacion in retroalimentaciones %}
+                    <tr>
+                        <td>{{ retroalimentacion.id }}</td>
+                        <td>{{ retroalimentacion.tarea.titulo }}</td>
+                        <td>{{ retroalimentacion.nombre_estudiante }}</td>
+                        <td>{{ retroalimentacion.comentario }}</td>
+                        <td>
+                            <a href="/editarRetroalimentacion/{{ retroalimentacion.id }}" class="btn btn-warning btn-sm me-2">Editar</a>
+                            <a onclick="return confirm('¿Está seguro de eliminar permanentemente?')" href="/eliminarRetroalimentacion/{{ retroalimentacion.id }}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

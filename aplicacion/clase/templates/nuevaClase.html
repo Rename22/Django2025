@@ -1,0 +1,115 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Agregar Nueva Clase</h3>
+        
+        <!-- Contenedor para mostrar alertas -->
+        <div id="alertas" class="mb-3"></div>
+        
+        <form id="formClase" action="/guardarClase/" method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Título -->
+            <div class="mb-3">
+                <label for="titulo" class="form-label"><b>Título:</b></label>
+                <input 
+                    type="text" 
+                    name="titulo" 
+                    id="titulo" 
+                    class="form-control" 
+                    required 
+                    minlength="4" 
+                    maxlength="200"
+                >
+                <div class="invalid-feedback">
+                    El título es obligatorio y debe tener entre 4 y 200 caracteres.
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-3">
+                <label for="descripcion" class="form-label"><b>Descripción:</b></label>
+                <textarea 
+                    name="descripcion" 
+                    id="descripcion" 
+                    class="form-control" 
+                    rows="5" 
+                    required
+                ></textarea>
+                <div class="invalid-feedback">
+                    La descripción es obligatoria.
+                </div>
+            </div>
+
+            <!-- URL del Video -->
+            <div class="mb-3">
+                <label for="video_url" class="form-label"><b>URL del Video:</b></label>
+                <input 
+                    type="url" 
+                    name="video_url" 
+                    id="video_url" 
+                    class="form-control" 
+                    required
+                >
+                <div class="invalid-feedback">
+                    Debe proporcionar una URL válida para el video.
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary me-2">Guardar</button>
+                <a href="/listadoClase/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("formClase");
+        const alertas = document.getElementById("alertas");
+
+        form.addEventListener("submit", (event) => {
+            alertas.innerHTML = ""; // Limpiar alertas previas
+            let esValido = true;
+
+            // Limpiar las clases previas de error
+            const fields = form.querySelectorAll(".form-control");
+            fields.forEach(field => {
+                field.classList.remove("is-invalid");
+            });
+
+            // Validar título
+            const titulo = form.titulo;
+            if (!titulo.value || titulo.value.length < 4 || titulo.value.length > 200) {
+                esValido = false;
+                titulo.classList.add("is-invalid");
+            }
+
+            // Validar descripción
+            const descripcion = form.descripcion;
+            if (!descripcion.value) {
+                esValido = false;
+                descripcion.classList.add("is-invalid");
+            }
+
+            // Validar URL del video
+            const video_url = form.video_url;
+            if (!video_url.value || !video_url.value.startsWith("http")) {
+                esValido = false;
+                video_url.classList.add("is-invalid");
+            }
+
+            // Detener el envío si hay errores
+            if (!esValido) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

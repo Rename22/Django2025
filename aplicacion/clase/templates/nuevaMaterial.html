@@ -1,0 +1,114 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Agregar Nuevo Material</h3>
+        
+        <!-- Contenedor para mostrar alertas -->
+        <div id="alertas" class="mb-3"></div>
+        
+        <form id="formMaterial" action="/guardarMaterial/" method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <!-- Clase -->
+            <div class="mb-3">
+                <label for="clase" class="form-label"><b>Clase:</b></label>
+                <select name="clase" id="clase" class="form-control" required>
+                    <option value="">Seleccione una clase</option>
+                    
+                    {% for clase in clases %}
+                        <option value="{{ clase.id }}" {% if clase.id == clase_seleccionada %}selected{% endif %}>{{ clase.titulo }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Debe seleccionar una clase.
+                </div>
+            </div>
+
+            <!-- Título del Material -->
+            <div class="mb-3">
+                <label for="titulo" class="form-label"><b>Título del Material:</b></label>
+                <input 
+                    type="text" 
+                    name="titulo" 
+                    id="titulo" 
+                    class="form-control" 
+                    required 
+                    maxlength="200"
+                >
+                <div class="invalid-feedback">
+                    El título es obligatorio y no debe exceder los 200 caracteres.
+                </div>
+            </div>
+
+            <!-- Archivo -->
+            <div class="mb-3">
+                <label for="archivo" class="form-label"><b>Archivo:</b></label>
+                <input 
+                    type="file" 
+                    name="archivo" 
+                    id="archivo" 
+                    class="form-control" 
+                    required
+                >
+                <div class="invalid-feedback">
+                    Debe seleccionar un archivo para el material.
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary me-2">Guardar</button>
+                <a href="/listadoMaterial/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("formMaterial");
+        const alertas = document.getElementById("alertas");
+
+        form.addEventListener("submit", (event) => {
+            alertas.innerHTML = ""; // Limpiar alertas previas
+            let esValido = true;
+
+            // Limpiar las clases previas de error
+            const fields = form.querySelectorAll(".form-control");
+            fields.forEach(field => {
+                field.classList.remove("is-invalid");
+            });
+
+            // Validar clase
+            const clase = form.clase;
+            if (!clase.value) {
+                esValido = false;
+                clase.classList.add("is-invalid");
+            }
+
+            // Validar título
+            const titulo = form.titulo;
+            if (!titulo.value || titulo.value.length > 200) {
+                esValido = false;
+                titulo.classList.add("is-invalid");
+            }
+
+            // Validar archivo
+            const archivo = form.archivo;
+            if (!archivo.value) {
+                esValido = false;
+                archivo.classList.add("is-invalid");
+            }
+
+            // Detener el envío si hay errores
+            if (!esValido) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

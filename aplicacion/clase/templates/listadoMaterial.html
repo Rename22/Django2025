@@ -1,0 +1,40 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor para la tabla -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Lista de Materiales</h3>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Clase</th>
+                    <th>Archivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materiales %}
+                    <tr>
+                        <td>{{ material.id }}</td>
+                        <td>{{ material.titulo }}</td>
+                        <td>{{ material.clase.titulo }}</td> <!-- Mostrar título de la clase relacionada -->
+                        
+                        <td>
+                            <a href="{{ material.archivo.url }}" target="_blank">Ver Archivo</a> <!-- Enlace al archivo -->
+                        </td>
+                        <td>{{ material.created_at|date:"d/m/Y H:i" }}</td> <!-- Muestra la fecha de creación -->
+                        <td>
+                            <a href="/editarMaterial/{{ material.id }}" class="btn btn-warning btn-sm me-2">Editar</a>
+
+                            <a onclick="return confirm('¿Está seguro de eliminar permanentemente?')" href="/eliminarMaterial/{{ material.id }}" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Actualizar Tarea</h3>
+        <form action="/procesarEdicionTarea/" id="frm_editar_tarea" method="post">
+            {% csrf_token %}
+
+            <!-- Campo oculto para el ID -->
+            <div class="mb-3">
+                <label for="id" class="form-label"><b>ID:</b></label>
+                <input type="hidden" name="id" value="{{ tarea.id }}">
+                <input type="text" class="form-control" id="id" value="{{ tarea.id }}" readonly>
+            </div>
+
+            <!-- Título -->
+            <div class="mb-3">
+                <label for="titulo" class="form-label"><b>Título:</b></label>
+                <input type="text" name="titulo" id="titulo" class="form-control" value="{{ tarea.titulo }}" required>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-3">
+                <label for="descripcion" class="form-label"><b>Descripción:</b></label>
+                <textarea name="descripcion" id="descripcion" class="form-control" rows="5" required>{{ tarea.descripcion }}</textarea>
+            </div>
+
+            <!-- Fecha Límite -->
+            <div class="mb-3">
+                <label for="fecha_limite" class="form-label"><b>Fecha Límite:</b></label>
+                <input type="date" name="fecha_limite" id="fecha_limite" class="form-control" value="{{ tarea.fecha_limite|date:'Y-m-d' }}" required>
+            </div>
+
+            <!-- Clase Asociada -->
+            <div class="mb-3">
+                <label for="clase" class="form-label"><b>Clase Asociada:</b></label>
+                <select name="clase" id="clase" class="form-control" required>
+                    <option value="">Seleccione una clase</option>
+                    {% for clase in clases %}
+                        <option value="{{ clase.id }}" {% if tarea.clase.id == clase.id %}selected{% endif %}>{{ clase.titulo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning me-2">Actualizar</button>
+                <a href="/listadoTarea/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

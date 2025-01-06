@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clase online</title>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" integrity="sha512-DIW4FkYTOxjCqRt7oS9BFO+nVOwDL4bzukDyDtMO7crj0UZhwpyrWBFroq+IqRe6VnJkTpRAS6nhDvf0w+wHmxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+
+  <style>
+    /* Estilos personalizados */
+    .navbar-brand {
+      font-weight: bold;
+      color: #ffffff; /* Blanco para el texto del navbar */
+    }
+    .dropdown-menu {
+      background-color: #616161; /* Plomo */
+    }
+    header {
+      background-color: #616161; /* Plomo */
+      color: #ffffff; /* Texto blanco */
+    }
+    .footer {
+      background-color: #80deea; /* Azul aguado */
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .bg-primary-custom {
+      background-color: #616161; /* Plomo */
+      color: white;
+    }
+    .bg-secondary-custom {
+      background-color: #616161; /* Plomo */
+      color: white;
+    }
+    .bg-warning-custom {
+      background-color: #80deea; /* Azul aguado */
+      color: black;
+    }
+    .logo {
+      border: 3px solid #ffffff; /* Borde blanco */
+      border-radius: 50%; /* Redondear el logo */
+    }
+    .titulo {
+      font-size: 3em; /* Tamaño del título */
+      font-weight: bold;
+      color: #509f69; /* Plomo para el título */
+    }
+    .color-primario {
+      color: #d32525; /* Plomo para parte del título */
+    }
+    .color-secundario {
+      color: #503692; /* Plomo para otra parte del título */
+    }
+  </style>
+</head>
+
+<body>
+    <header class="text-center py-3 mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHB-ZRAbcX3snwhAHwwLAIAHnu6u3DgUGrAw&s" alt="Logo Mascota" class="img-fluid rounded mx-auto d-block logo">
+            </div>
+            <div class="col-md-6">
+                <h1 class="titulo">
+                    <span class="color-primario">clases en </span><span class="color-secundario">linea</span>.com
+                </h1>
+                <p class="lead">El aprendizaje es un tesoro que sigue a su propietario durante toda la vida</p>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg bg-secondary-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clase
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/listadoClase/">Listado de Clase</a></li>
+                            <li><a class="dropdown-item" href="/nuevaClase/{{ clase.id }}">Agregar Clase</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Material
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/listadoMaterial/">Listado de Propietarios</a></li>
+                            <li><a class="dropdown-item" href="/nuevaMaterial/">Agregar Propietario</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Tarea
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/listadoTarea/">Listado de Reportes</a></li>
+                            <li><a class="dropdown-item" href="/nuevaTarea/">Agregar Reporte</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Retroalimentacion
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/listadoRetroalimentacion/">Listado de Reportes</a></li>
+                            <li><a class="dropdown-item" href="/nuevaRetroalimentacion/">Agregar Reporte</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block contenido %}
+    {% endblock %}
+
+    <div class="footer mt-4">
+        <h3>Desarrollado por:</h3>
+        <h2>Eddy</h2>
+        <p>Contacto: <a href="mailto:eddy@example.com">eddy@example.com</a></p>
+        <p>Síguenos en redes sociales: 
+          <a href="https://facebook.com" target="_blank">Facebook</a> | 
+          <a href="https://instagram.com" target="_blank">Instagram</a>
+        </p>
+        <p>&copy; 2025 CLASES EN LINEA.</p>
+    </div>
+
+    {% if messages %}
+        {% for mensajeConfirmacion in messages %}
+            <script>
+                if ("{{mensajeConfirmacion.tags}}" == "success") {
+                    iziToast.success({
+                        title: 'Éxito',
+                        message: '{{mensajeConfirmacion}}',
+                        position: 'topRight'
+                    });
+                }
+            </script>
+        {% endfor %}
+    {% endif %}
+    <script>
+      $("#frm_nueva_clase").validate({
+          rules:{
+              titulo:{
+                  required:true,
+                  minlength: 4,
+                  maxlength: 12,
+              },
+              descripcion:{
+                  required:true,
+                  minlength: 4,
+                  maxlength: 12
+              },
+              video_url:{
+                  required:true,
+                  minlength: 4,
+                  maxlength: 12
+              }
+          },
+          messages:{
+              
+              }
+          }
+      );
+  </script>
+</body>
+</html>

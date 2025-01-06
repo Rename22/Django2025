@@ -1,0 +1,72 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Actualizar Retroalimentación</h3>
+        <form action="/procesarEdicionRetroalimentacion/" id="frm_editar_retroalimentacion" method="post">
+            {% csrf_token %}
+
+            <!-- Campo oculto para el ID -->
+            <div class="mb-3">
+                <label for="id" class="form-label"><b>ID:</b></label>
+                <input type="hidden" name="id" value="{{ retroalimentacion.id }}">
+                <input type="text" class="form-control" id="id" value="{{ retroalimentacion.id }}" readonly>
+            </div>
+
+            <!-- Tarea -->
+            <div class="mb-3">
+                <label for="tarea" class="form-label"><b>Tarea:</b></label>
+                <select name="tarea" id="tarea" class="form-control" required>
+                    {% for tarea in tareas %}
+                        <option value="{{ tarea.id }}" {% if tarea.id == retroalimentacion.tarea.id %}selected{% endif %}>{{ tarea.titulo }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Debe seleccionar una tarea.
+                </div>
+            </div>
+
+            <!-- Nombre del Estudiante -->
+            <div class="mb-3">
+                <label for="nombre_estudiante" class="form-label"><b>Nombre del Estudiante:</b></label>
+                <input 
+                    type="text" 
+                    name="nombre_estudiante" 
+                    id="nombre_estudiante" 
+                    class="form-control" 
+                    value="{{ retroalimentacion.nombre_estudiante }}"
+                    required 
+                    minlength="2" 
+                    maxlength="100"
+                >
+                <div class="invalid-feedback">
+                    El nombre del estudiante es obligatorio y debe tener entre 2 y 100 caracteres.
+                </div>
+            </div>
+
+            <!-- Comentario -->
+            <div class="mb-3">
+                <label for="comentario" class="form-label"><b>Comentario:</b></label>
+                <textarea 
+                    name="comentario" 
+                    id="comentario" 
+                    class="form-control" 
+                    rows="5" 
+                    required
+                >{{ retroalimentacion.comentario }}</textarea>
+                <div class="invalid-feedback">
+                    El comentario es obligatorio.
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning me-2">Editar</button>
+                <a href="/listadoRetroalimentacion/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

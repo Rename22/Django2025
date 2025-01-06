@@ -1,0 +1,114 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Agregar Nueva Retroalimentación</h3>
+        
+        <!-- Contenedor para mostrar alertas -->
+        <div id="alertas" class="mb-3"></div>
+        
+        <form id="formRetroalimentacion" action="/guardarRetroalimentacion/" method="post" novalidate>
+            {% csrf_token %}
+
+            <!-- Tarea -->
+            <div class="mb-3">
+                <label for="tarea" class="form-label"><b>Tarea:</b></label>
+                <select name="tarea" id="tarea" class="form-control" required>
+                    <option value="">Seleccione una tarea</option>
+                    {% for tarea in tareas %}
+                        <option value="{{ tarea.id }}">{{ tarea.titulo }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Debe seleccionar una tarea.
+                </div>
+            </div>
+
+            <!-- Nombre del Estudiante -->
+            <div class="mb-3">
+                <label for="nombre_estudiante" class="form-label"><b>Nombre del Estudiante:</b></label>
+                <input 
+                    type="text" 
+                    name="nombre_estudiante" 
+                    id="nombre_estudiante" 
+                    class="form-control" 
+                    required 
+                    minlength="2" 
+                    maxlength="100"
+                >
+                <div class="invalid-feedback">
+                    El nombre del estudiante es obligatorio y debe tener entre 2 y 100 caracteres.
+                </div>
+            </div>
+
+            <!-- Comentario -->
+            <div class="mb-3">
+                <label for="comentario" class="form-label"><b>Comentario:</b></label>
+                <textarea 
+                    name="comentario" 
+                    id="comentario" 
+                    class="form-control" 
+                    rows="5" 
+                    required
+                ></textarea>
+                <div class="invalid-feedback">
+                    El comentario es obligatorio.
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary me-2">Guardar</button>
+                <a href="/listadoRetroalimentacion/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("formRetroalimentacion");
+        const alertas = document.getElementById("alertas");
+
+        form.addEventListener("submit", (event) => {
+            alertas.innerHTML = ""; // Limpiar alertas previas
+            let esValido = true;
+
+            // Limpiar las clases previas de error
+            const fields = form.querySelectorAll(".form-control");
+            fields.forEach(field => {
+                field.classList.remove("is-invalid");
+            });
+
+            // Validar tarea
+            const tarea = form.tarea;
+            if (!tarea.value) {
+                esValido = false;
+                tarea.classList.add("is-invalid");
+            }
+
+            // Validar nombre del estudiante
+            const nombre_estudiante = form.nombre_estudiante;
+            if (!nombre_estudiante.value || nombre_estudiante.value.length < 2 || nombre_estudiante.value.length > 100) {
+                esValido = false;
+                nombre_estudiante.classList.add("is-invalid");
+            }
+
+            // Validar comentario
+            const comentario = form.comentario;
+            if (!comentario.value) {
+                esValido = false;
+                comentario.classList.add("is-invalid");
+            }
+
+            // Detener el envío si hay errores
+            if (!esValido) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+{% endblock %}
